@@ -1,0 +1,14 @@
+- Add Plus Buttons to Subgroups
+
+
+
+
+
+
+
+
+- Get output from AI to Unity screen
+- Connect insteuctor input to AI output.
+- Save AI outputs to save AI generating same thing twice
+
+- Have Ai work with different bullet points or groups of them separetly (i.e. multiple AI prompts?)
