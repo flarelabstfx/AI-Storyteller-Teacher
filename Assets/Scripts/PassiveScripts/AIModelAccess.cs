@@ -31,7 +31,7 @@ public class AIModelAccess : MonoBehaviour
         //Step 3: Create virtual envirnment
         commandText += " & python -m venv venv";
 
-        //Step 4: Install everything from requirements.txt
+        //Step 4: Install everything from dolly requirements and gbt requirements into the virtual machine.
         commandText += " & venv\\Scripts\\activate.bat";
         commandText += " & pip install -r \"requirements\\dolly requirements.txt\"";
         commandText += " & pip install -r \"requirements\\gbt requirements.txt\"";
@@ -66,21 +66,10 @@ public class AIModelAccess : MonoBehaviour
     public static string GetCommand(string modelName, string prompt)
     {
         string commandText = "";
-        //if (modelName == "Dolly")
-        //{
-            //Adapted From: https://stackoverflow.com/questions/15878810/how-to-execute-command-on-cmd-from-c-sharp
-            commandText = "cd " + "\"" + pythonFilesFolderPath + "\"";
-            commandText += " & venv\\Scripts\\activate.bat";
-            commandText += " & python \"" + pythonFilesFolderPath + "\\main.py\" \"" + modelName + "\" \"" + prompt;
-        //}
-        //else if (modelName == "test")
-        //{
-        //    commandText = "echo test";
-        //}
-        //else
-        //{
-        //    UnityEngine.Debug.LogWarning("Model name does not exist! Stuff won't work correctly! Please Fix!");
-        //}
+        //Adapted From: https://stackoverflow.com/questions/15878810/how-to-execute-command-on-cmd-from-c-sharp
+        commandText = "cd " + "\"" + pythonFilesFolderPath + "\"";
+        commandText += " & venv\\Scripts\\activate.bat";
+        commandText += " & python \"" + pythonFilesFolderPath + "\\main.py\" \"" + modelName + "\" \"" + prompt;
 
         return commandText;
     }

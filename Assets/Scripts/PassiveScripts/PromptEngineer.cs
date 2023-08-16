@@ -41,23 +41,6 @@ public class PromptEngineer : MonoBehaviour
         //Step 1: Generate initial output from starting prompt
         await GetOutputFromModel(modelName, prompt);
 
-        /*Process selfRefineProcess = Process.Start(AIModelAccess.GetProcessStartInfo(AIModelAccess.GetCommand(modelName, prompt)));
-        System.IO.StreamReader selfRefineOutputStream = selfRefineProcess.StandardOutput;
-
-        string selfRefineOutputString = "Did not receive output.";
-
-        //Adapted from Marco Concas & David Molnar's answer here: https://stackoverflow.com/questions/470256/process-waitforexit-asynchronously
-        while (!selfRefineProcess.HasExited)
-        {
-            UnityEngine.Debug.Log("Waiting...");
-            await Task.Delay(1000);
-        }
-
-        selfRefineOutputString = selfRefineOutputStream.ReadToEnd();
-
-        //Adapted From: https://stackoverflow.com/questions/20432379/remove-last-line-from-a-string
-        selfRefineOutputString = selfRefineOutputString.Remove(selfRefineOutputString.LastIndexOf(System.Environment.NewLine));*/
-
         for (int i = 0; i < refineCycles; i++)
         {
             UnityEngine.Debug.Log("i: " + i);
@@ -67,50 +50,16 @@ public class PromptEngineer : MonoBehaviour
             //Step 2: Critique this output.
             await GetOutputFromModel(modelName, critiqueGuideString + lastOutput);
 
-            /*Process critiqueProcess = Process.Start(AIModelAccess.GetProcessStartInfo(AIModelAccess.GetCommand(modelName, "Critique the following:\n\n" + selfRefineOutputString)));
-            System.IO.StreamReader critiqueOutputStream = critiqueProcess.StandardOutput;
-
-            string critiqueOutputString = "Did not receive output.";
-
-            while (!critiqueProcess.HasExited)
-            {
-                UnityEngine.Debug.Log("Waiting...");
-                await Task.Delay(1000);
-            }
-
-            critiqueOutputString = critiqueOutputStream.ReadToEnd();
-
-            //Adapted From: https://stackoverflow.com/questions/20432379/remove-last-line-from-a-string
-            critiqueOutputString = critiqueOutputString.Remove(critiqueOutputString.LastIndexOf(System.Environment.NewLine));*/
-
             UnityEngine.Debug.Log("critiqueOutputString: " + lastOutput);
 
 
             //Step 3: Get model to give new refined output based on critique.
             await GetOutputFromModel(modelName, "Address this critique:\n\n" + lastOutput + "\n\nApply the above critique for the following prompt:\n\n" + prompt);
 
-            /*selfRefineProcess = Process.Start(AIModelAccess.GetProcessStartInfo(AIModelAccess.GetCommand(modelName, "Address this critique:\n\n" + critiqueOutputString + "\n\nApply the above critique for the following prompt:\n\n" + prompt)));
-            selfRefineOutputStream = selfRefineProcess.StandardOutput;
-
-            selfRefineOutputString = "Did not receive output.";
-
-            while (!selfRefineProcess.HasExited)
-            {
-                UnityEngine.Debug.Log("Waiting...");
-                await Task.Delay(1000);
-            }
-
-            selfRefineOutputString = selfRefineOutputStream.ReadToEnd();
-
-            //Adapted From: https://stackoverflow.com/questions/20432379/remove-last-line-from-a-string
-            selfRefineOutputString = selfRefineOutputString.Remove(selfRefineOutputString.LastIndexOf(System.Environment.NewLine));*/
-
             //Step 4: Repeat steps 2-3 as many times as requested (in the refineCycles variable).
         }
 
-        //UnityEngine.Debug.Log("Final selfRefineOutputString (i.e. the final resulting output): " + selfRefineOutputString);
         UnityEngine.Debug.Log("Final selfRefineOutputString (i.e. the final resulting output): " + lastOutput);
-        //aIModelAccess.lastCompiledResult = selfRefineOutputString;
         aIModelAccess.lastCompiledResult = lastOutput;
 
     }
@@ -195,14 +144,14 @@ public class PromptEngineer : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     
-    //For now, this will just generate explanation of the phnomena.
+    //For now, this will just generate an explanation of the phnomena or otherwise try to get the AI into the right mindset of telling a story.
     public async Task SocraticPromptingAsync(string modelName, string prompt)
     {
         //string refinedPrompt = "";
 
         //await GetOutputFromModel("GBT", "Generate an explanation about the phenomina surrounding how to tell a fantasy story.");
         //await GetOutputFromModel("GBT", "Give me a paragraph about algebra as if it were written by J. K. Rowling.");
-        await GetOutputFromModel(modelName, "Give me a paragraph of stortelling by J. K. Rowling.");
+        await GetOutputFromModel(modelName, "Give me a paragraph of storytelling by J. K. Rowling.");
         //await GetOutputFromModel("GBT", "Give me a story as if written by J. K. Rowling about the following content:\n\n");
         UnityEngine.Debug.Log("Socratic Prompting Result: " + lastOutput);
 

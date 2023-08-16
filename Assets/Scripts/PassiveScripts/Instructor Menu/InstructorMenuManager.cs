@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+//Welcome to this annoyingly complicated script :P.
+
 [System.Serializable]
 public class ContentBulletPoint
 {
