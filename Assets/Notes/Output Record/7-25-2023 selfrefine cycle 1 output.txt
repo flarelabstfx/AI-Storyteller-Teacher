@@ -1,0 +1,5 @@
+Final selfRefineOutputString (i.e. the final resulting output): Start
+Step 1 Done
+Step 2 Done
+This is a great perspective on AngularDart. In contrast to Dart, Angular is still in its infancy and the creators are actively listening to the feedback from the community. You can already see some of the innovative features in Angular in the Dart official documentation.
+AngularDart has a great community that is willing to help each other. The web based IDE has the same code quality checks, analysis tools and debugging support as Dart Pad.

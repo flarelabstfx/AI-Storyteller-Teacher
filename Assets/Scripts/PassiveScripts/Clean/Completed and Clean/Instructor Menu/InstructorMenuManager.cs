@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+[System.Serializable]
 public class ContentBulletPoint
 {
     public ContentBulletPoint parentBulletPoint;
@@ -32,15 +33,21 @@ public class InstructorMenuManager : MonoBehaviour
     public Transform addBulletPointButton;
     public GameObject bulletPointPrefab;
     public GameObject addBulletPointButtonPrefab;
+    public SaverAndLoader saverAndLoader;
 
-    List<ContentBulletPoint> educationContent = new List<ContentBulletPoint>();
+    [HideInInspector]
+    public string totalPrompt = "";
+
+    public List<ContentBulletPoint> educationContent = new List<ContentBulletPoint>();
     List<GameObject> rowObjects = new List<GameObject>();
     float addBulletPointButtonStartingY;
 
     // Start is called before the first frame update
-    void Start()
+    public void CustomAwake()
     {
         addBulletPointButtonStartingY = addBulletPointButton.localPosition.y;
+
+        Debug.Log("Clean script since total probmpt was added (global declaration and usage in updatebulletpointdisplay function)");
     }
 
     List<int> GetBulletPointIDList(string bulletPointIDString)
@@ -108,6 +115,9 @@ public class InstructorMenuManager : MonoBehaviour
 
         ContentBulletPoint tmp = GetContentBulletPoint(bulletPointIDString);
         tmp.contents = newContents;
+
+        Debug.Log("test");
+        UpdateBulletPointDisplay();
     }
 
     public void AddBulletPoint(string parentBulletPointID, string contents = "")
@@ -193,10 +203,12 @@ public class InstructorMenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks the educationContent list and displays the according UI in the instructor menu.
+    /// Checks the educationContent list and displays the according UI in the instructor menu. Also makes the 'totalPrompt' string and also saves the contents to a file.
     /// </summary>
     public void UpdateBulletPointDisplay()
     {
+        saverAndLoader.SaveAll();
+
         //Remove all previously instantiated bullet point and addButton GameObjects (this doesn't include the bottom addButton).
         //We will be recreating them based on the updated contents of educationContent.
         for(int i = rowObjects.Count - 1; i >= 0; i--)
@@ -206,6 +218,8 @@ public class InstructorMenuManager : MonoBehaviour
 
         //Clear the deleted GameObjects out of the List.
         rowObjects.Clear();
+
+        totalPrompt = "";
 
         //This list contains everything yet to be instantiated, bullet points will be swapped out for their sub bullet points during the process.
         List<ContentBulletPoint> currentBulletPoints = new List<ContentBulletPoint>(educationContent);
@@ -247,6 +261,7 @@ public class InstructorMenuManager : MonoBehaviour
 
             //Note: Remember indentation.
 
+            totalPrompt += currentBulletPoints[0].contents + "\n";
             GameObject instantiatedObject = InstantiateBulletPoint(rowElementCount, currentID, currentBulletPoints[0].contents); //1
             rowElementCount++;
 

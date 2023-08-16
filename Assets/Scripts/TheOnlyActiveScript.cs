@@ -8,18 +8,25 @@ using UnityEngine;
 
 public class TheOnlyActiveScript : MonoBehaviour
 {
-
+    [Header("Refferences:")]
     public AIModelAccess aIModelAccess;
+    public SaverAndLoader saverAndLoader;
+    public InstructorMenuManager instructorMenuManager;
+
+    void Awake()
+    {
+        instructorMenuManager.CustomAwake();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        //aIModelAccess.RunTest();
+        saverAndLoader.LoadAll();
     }
 
     // Update is called once per frame
     void Update()
     {
-        aIModelAccess.CustomUpdate();
+        //aIModelAccess.CustomUpdate();
     }
 }
